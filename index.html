@@ -1,161 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Prakash & Sowndharya 💖</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine Quiz for Prakash 💖</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', cursive, sans-serif;
-  background: linear-gradient(135deg, #ffb6c1, #ff69b4);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-}
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      color: #fff;
+    }
 
-.card {
-  background: rgba(255,182,193,0.95);
-  border-radius: 30px;
-  padding: 40px;
-  width: 90%;
-  max-width: 500px;
-  text-align: center;
-  box-shadow: 0 0 40px rgba(255,20,147,0.7);
-  animation: popIn 1s ease;
-}
+    .card {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
 
-.hidden { display: none; }
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
 
-h1 {
-  text-shadow: 2px 2px 6px #ff1493;
-}
+    h2 {
+      font-size: 20px;
+      margin: 20px 0;
+    }
 
-p {
-  font-size: 1.25em;
-}
+    button {
+      background: #ff4d6d;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+      transition: transform 0.2s;
+    }
 
-.btn {
-  background: #ff1493;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 50px;
-  font-size: 1.1em;
-  color: white;
-  cursor: pointer;
-  margin: 10px;
-  transition: 0.3s;
-}
+    button:hover {
+      transform: scale(1.05);
+    }
 
-.btn:hover {
-  transform: scale(1.1);
-  background: #ff69b4;
-}
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
 
-@keyframes popIn {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+    .confetti span {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: pink;
+      animation: fall 3s linear infinite;
+      opacity: 0.8;
+    }
 
-.emoji {
-  position: absolute;
-  font-size: 30px;
-  animation: fall 6s linear infinite;
-}
-
-@keyframes fall {
-  from { transform: translateY(-10vh); opacity: 1; }
-  to { transform: translateY(110vh); opacity: 0; }
-}
-</style>
+    @keyframes fall {
+      from {
+        transform: translateY(-10vh) rotate(0deg);
+      }
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- 🎵 Background Music -->
-<audio id="bgMusic" loop>
-  <source src="whendidyougethot.mp3" type="audio/mpeg">
-</audio>
+  <div class="card" id="quizCard">
+    <h1>💖 Valentine Quiz 💖</h1>
+    <h2 id="question">Ready for something special, Prakash? 😌</h2>
+    <button onclick="nextQuestion()">Next 💕</button>
+  </div>
 
-<script>
-function playMusic() {
-  const music = document.getElementById("bgMusic");
-  music.volume = 3.2;
-  music.play();
-}
+  <div class="confetti" id="confetti"></div>
 
-function next(a,b){
-  document.getElementById(a).classList.add("hidden");
-  document.getElementById(b).classList.remove("hidden");
-}
+  <script>
+    let currentQuestion = 0;
 
-function spawnEmoji(emoji) {
-  const el = document.createElement("div");
-  el.className = "emoji";
-  el.innerHTML = emoji;
-  el.style.left = Math.random() * 100 + "vw";
-  el.style.animationDuration = (3 + Math.random() * 3) + "s";
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 7000);
-}
+    const questions = [
+      "Are you aware that your eye color is sooo attractive? 😍",
+      "Aren’t you glad that I chose you? 💖",
+      "What kind of good deeds did you do that you got me now? 😌"
+    ];
 
-function celebrate() {
-  next('final','celebration');
-  setInterval(() => spawnEmoji("🎉"), 200);
-  setInterval(() => spawnEmoji("🤗"), 300);
-  setInterval(() => spawnEmoji("💞"), 250);
-}
-</script>
+    function nextQuestion() {
+      currentQuestion++;
 
-<div class="card" id="q1">
-  <h1>Hey Prakash 💕</h1>
-  <p>I made this just for you 😌</p>
-  <button class="btn" onclick="playMusic(); next('q1','q2')">Start 💖</button>
-</div>
+      if (currentQuestion < questions.length) {
+        document.getElementById("question").innerText = questions[currentQuestion];
+      } else {
+        showFinal();
+      }
+    }
 
-<div class="card hidden" id="q2">
-  <h1>Question 1 💘</h1>
-  <p>Are you aware that your eye color is sooo attractive? 😍</p>
-  <button class="btn" onclick="next('q2','q3')">I know 😉</button>
-  <button class="btn" onclick="next('q2','q3')">Now I am 😌</button>
-</div>
+    function showFinal() {
+      document.getElementById("quizCard").innerHTML = `
+        <h1>💖 FOREVER YES 💖</h1>
+        <h2>Prakash & Sowndharya</h2>
+        <p>are officially love children 🥰</p>
+        <p>Infinite hugs, kisses & forever promises 💍</p>
+      `;
+      startConfetti();
+    }
 
-<div class="card hidden" id="q3">
-  <h1>Question 2 🌸</h1>
-  <p>Aren’t you glad that I chose you? 💞</p>
-  <button class="btn" onclick="next('q3','q4')">Very glad 🥰</button>
-  <button class="btn" onclick="next('q3','q4')">Luckiest me 💖</button>
-</div>
+    function startConfetti() {
+      const confetti = document.getElementById("confetti");
 
-<div class="card hidden" id="q4">
-  <h1>Question 3 🌹</h1>
-  <p>What kind of good deeds did you do that you got me now? 😌</p>
-  <button class="btn" onclick="next('q4','final')">Pure destiny ✨</button>
-  <button class="btn" onclick="next('q4','final')">Past life magic 💕</button>
-</div>
-
-<div class="card hidden" id="final">
-  <h1>Prakash 💖</h1>
-  <p>Will you be my Valentine? 🌹</p>
-  <button class="btn" onclick="celebrate()">Forever Yes 💞</button>
-</div>
-
-<div class="card hidden" id="celebration">
-  <h1>🎉 IT’S OFFICIAL 🎉</h1>
-  <p>
-    💕 Prakash & Sowndharya 💕  
-    <br><br>
-    are hereby declared  
-    <br><br>
-    <strong>THE LOVE CHILDREN OF DESTINY</strong> 💘  
-    <br><br>
-    🤗 Infinite hugs, kisses & forever love 🤗
-  </p>
-</div>
+      for (let i = 0; i < 60; i++) {
+        const span = document.createElement("span");
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.animationDelay = Math.random() * 3 + "s";
+        span.style.background = ["#ff69b4", "#ffc0cb", "#ff4d6d"][Math.floor(Math.random() * 3)];
+        confetti.appendChild(span);
+      }
+    }
+  </script>
 
 </body>
 </html>
-
