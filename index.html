@@ -1,139 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine Quiz for Prakash 💖</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Quiz for Prakash 💖</title>
 
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      color: #fff;
-    }
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #fff;
+  }
 
-    .card {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 25px;
-      max-width: 400px;
-      width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
+  .card {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+  }
 
-    h1 {
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
+  h1 {
+    font-size: 26px;
+  }
 
-    h2 {
-      font-size: 20px;
-      margin: 20px 0;
-    }
+  h2 {
+    font-size: 20px;
+    margin: 20px 0;
+  }
 
-    button {
-      background: #ff4d6d;
-      border: none;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 15px;
-      width: 100%;
-      transition: transform 0.2s;
-    }
+  .option {
+    background: #ff4d6d;
+    border: none;
+    color: white;
+    padding: 14px;
+    border-radius: 30px;
+    font-size: 16px;
+    margin: 10px 0;
+    width: 100%;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+  }
 
-    button:hover {
-      transform: scale(1.05);
-    }
+  .option:hover {
+    transform: scale(1.05);
+    background: #ff1f4a;
+  }
 
-    .confetti {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
+  .confetti {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+  }
 
-    .confetti span {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: pink;
-      animation: fall 3s linear infinite;
-      opacity: 0.8;
-    }
+  .confetti span {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    animation: fall 3s linear infinite;
+    opacity: 0.8;
+  }
 
-    @keyframes fall {
-      from {
-        transform: translateY(-10vh) rotate(0deg);
-      }
-      to {
-        transform: translateY(110vh) rotate(360deg);
-      }
-    }
-  </style>
+  @keyframes fall {
+    from { transform: translateY(-10vh) rotate(0deg); }
+    to { transform: translateY(110vh) rotate(360deg); }
+  }
+</style>
 </head>
 
 <body>
 
-  <div class="card" id="quizCard">
-    <h1>💖 Valentine Quiz 💖</h1>
-    <h2 id="question">Ready for something special, Prakash? 😌</h2>
-    <button onclick="nextQuestion()">Next 💕</button>
-  </div>
+<div class="card" id="quizCard">
+  <h1>💖 Valentine Quiz 💖</h1>
+  <h2 id="question"></h2>
+  <div id="options"></div>
+</div>
 
-  <div class="confetti" id="confetti"></div>
+<div class="confetti" id="confetti"></div>
 
-  <script>
-    let currentQuestion = 0;
+<script>
+const quiz = [
+  {
+    q: "Are you aware that your eye color is sooo attractive? 😍",
+    options: [
+      "I know, I’m irresistible 😌",
+      "Only to you 💖",
+      "Now I am 👀💕"
+    ]
+  },
+  {
+    q: "Aren’t you glad that I chose you? 💕",
+    options: [
+      "Every single day 🥰",
+      "Luckiest guy alive 😭❤️",
+      "Forever grateful 💍"
+    ]
+  },
+  {
+    q: "What kind of good deeds did you do that you got me now? 😌",
+    options: [
+      "Saved puppies in my past life 🐶",
+      "Loved you before I met you 💞",
+      "Pure destiny ✨"
+    ]
+  }
+];
 
-    const questions = [
-      "Are you aware that your eye color is sooo attractive? 😍",
-      "Aren’t you glad that I chose you? 💖",
-      "What kind of good deeds did you do that you got me now? 😌"
-    ];
+let current = 0;
 
-    function nextQuestion() {
-      currentQuestion++;
+function loadQuestion() {
+  document.getElementById("question").innerText = quiz[current].q;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
 
-      if (currentQuestion < questions.length) {
-        document.getElementById("question").innerText = questions[currentQuestion];
-      } else {
-        showFinal();
-      }
-    }
+  quiz[current].options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.innerText = opt;
+    btn.onclick = nextQuestion;
+    optionsDiv.appendChild(btn);
+  });
+}
 
-    function showFinal() {
-      document.getElementById("quizCard").innerHTML = `
-        <h1>💖 FOREVER YES 💖</h1>
-        <h2>Prakash & Sowndharya</h2>
-        <p>are officially love children 🥰</p>
-        <p>Infinite hugs, kisses & forever promises 💍</p>
-      `;
-      startConfetti();
-    }
+function nextQuestion() {
+  current++;
+  if (current < quiz.length) {
+    loadQuestion();
+  } else {
+    showFinal();
+  }
+}
 
-    function startConfetti() {
-      const confetti = document.getElementById("confetti");
+function showFinal() {
+  document.getElementById("quizCard").innerHTML = `
+    <h1>💖 FOREVER YES 💖</h1>
+    <h2>Prakash & Sowndharya</h2>
+    <p>are officially love children 🥰</p>
+    <p>Infinite hugs, kisses & forever 💍</p>
+  `;
+  startConfetti();
+}
 
-      for (let i = 0; i < 60; i++) {
-        const span = document.createElement("span");
-        span.style.left = Math.random() * 100 + "vw";
-        span.style.animationDelay = Math.random() * 3 + "s";
-        span.style.background = ["#ff69b4", "#ffc0cb", "#ff4d6d"][Math.floor(Math.random() * 3)];
-        confetti.appendChild(span);
-      }
-    }
-  </script>
+function startConfetti() {
+  const confetti = document.getElementById("confetti");
+  for (let i = 0; i < 60; i++) {
+    const span = document.createElement("span");
+    span.style.left = Math.random() * 100 + "vw";
+    span.style.background =
+      ["#ff69b4", "#ffc0cb", "#ff4d6d"][Math.floor(Math.random() * 3)];
+    span.style.animationDelay = Math.random() * 3 + "s";
+    confetti.appendChild(span);
+  }
+}
+
+loadQuestion();
+</script>
 
 </body>
 </html>
